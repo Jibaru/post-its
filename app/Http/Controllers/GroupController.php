@@ -156,6 +156,66 @@ class GroupController extends Controller
         );
     }
 
+    /**
+     * Subscribe user to the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function subscribe($id)
+    {
+        $validator = $this->groupIdValidator($id);
+
+        if ($validator->fails())
+        {
+            return response()->json(
+                [
+                    'message' => 'Grupo no encontrado',
+                    'errors' => $validator->errors()
+                ],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $user = Auth::user();
+
+        if (is_null($user))
+        {
+            return response()->json(
+                [
+                    'message' => 'Autenticación inválida'
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        if (!is_null(
+            $this->groupRepository
+                ->getGroupById($id)
+                ->users
+                ->firstWhere('id', $user->id)))
+        {
+            return response()->json(
+                [
+                    'message' => 'Ya es miembro del grupo'
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $this->groupRepository->attachUserToGroup($id, $user->id);
+
+        return response()->json(
+            [
+                'message' => 'Suscrito al grupo',
+                'group' => [
+                    'id' => $id,
+                ]
+            ],
+            Response::HTTP_OK
+        );
+    }
+
     private function groupIdValidator($id)
     {
         return Validator::make(

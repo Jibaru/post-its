@@ -61,4 +61,17 @@ class GroupRepository implements GroupRepositoryInterface
             ->get()
             ->find($id);
     }
+
+    /**
+     * Attach a user to specified group
+     * 
+     * @param int $groupId
+     * @param int $userId
+     * @return void
+     */
+    public function attachUserToGroup($groupId, $userId)
+    {
+        $group = Group::find($groupId);
+        $group->users()->attach($userId);
+    }
 }
