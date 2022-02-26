@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function getUserById($id)
-    {
-        // TODO: Implementation
-    }
-
     /**
      * Create a new user
      * 
