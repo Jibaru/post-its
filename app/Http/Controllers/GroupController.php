@@ -108,13 +108,40 @@ class GroupController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Soft-delte the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $validator = $this->groupIdValidator($id);
+
+        if ($validator->fails())
+        {
+            return response()->json(
+                [
+                    'message' => 'Grupo no encontrado',
+                    'errors' => $validator->errors()
+                ],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $this->groupRepository->deleteGroup($id);
+
+        return response()->json(
+            [
+                "message" => "Grupo eliminado"
+            ],
+            Response::HTTP_OK,
+        );
+    }
+
+    private function groupIdValidator($id)
+    {
+        return Validator::make(
+            [ 'id' => $id ],
+            [ 'id' => 'required|exists:groups,id' ]);
     }
 }

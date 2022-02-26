@@ -32,4 +32,16 @@ class GroupRepository implements GroupRepositoryInterface
     {
         return Group::paginate($pageSize);
     }
+
+    /**
+     * Soft-delete the specified group
+     * 
+     * @param int $id
+     * @return boolean
+     */
+    public function deleteGroup($id)
+    {
+        $group = Group::find($id);
+        return $group->delete();
+    }
 }

@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Contracts\Repositories\GroupRepositoryInterface;
 use App\Http\Controllers\GroupController;
+use App\Models\Group;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -74,6 +75,28 @@ class GroupControllerTest extends TestCase
         $controller = new GroupController($mockRepository);
 
         $response = $controller->index($request);
+
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    /** @test */
+    public function a_status_200_is_returned_when_a_group_is_deleted()
+    {
+        $mockRepository = $this->mock(GroupRepositoryInterface::class, function ($mock)
+        {
+            $mock->shouldReceive('deleteGroup')->once()->andReturn(true);
+        });
+
+        $user = User::factory()->create();
+
+        $group = Group::factory()->create([
+            'created_by_id' => $user->id
+        ]);
+
+        // Note: If you check an editor error, the problem was in the intellisense
+        $controller = new GroupController($mockRepository);
+
+        $response = $controller->destroy($group->id);
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }

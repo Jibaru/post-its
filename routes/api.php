@@ -27,4 +27,5 @@ Route::post('login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('group', [GroupController::class, 'store']);
     Route::get('groups', [GroupController::class, 'index']);
+    Route::delete('groups/{id}', [GroupController::class, 'destroy']);
 });
