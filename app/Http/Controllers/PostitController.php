@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Repositories\FileRepositoryInterface;
+use App\Contracts\Repositories\GroupRepositoryInterface;
 use App\Contracts\Repositories\PostitRepositoryInterface;
+use App\Contracts\Repositories\UserRepositoryInterface;
+use App\Jobs\NewPostitCreatedJob;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -12,14 +15,20 @@ use Illuminate\Support\Facades\Validator;
 class PostitController extends Controller
 {
     private PostitRepositoryInterface $postitRepository;
+    private GroupRepositoryInterface $groupRepository;
+    private UserRepositoryInterface $userRepository;
     private FileRepositoryInterface $fileRepository;
 
     public function __construct(
         PostitRepositoryInterface $postitRepository,
+        UserRepositoryInterface $userRepository,
+        GroupRepositoryInterface $groupRepository,
         FileRepositoryInterface $fileRepository
     )
     {
         $this->postitRepository = $postitRepository;
+        $this->userRepository = $userRepository;
+        $this->groupRepository = $groupRepository;
         $this->fileRepository = $fileRepository;
     }
 
@@ -109,9 +118,13 @@ class PostitController extends Controller
             $postitData += [ 'image_url' => $fileUrl ];
         }
 
+        $postit = $this->postitRepository->savePostit($postitData);
+
+        $this->sendEmail($id, $postit, $user);
+
         return response()->json(
             [
-                'postit' => $this->postitRepository->savePostit($postitData) 
+                'postit' => $postit
             ],
             Response::HTTP_CREATED
         );
@@ -195,5 +208,20 @@ class PostitController extends Controller
             ],
             Response::HTTP_OK,
         );
+    }
+
+    private function sendEmail($groupId, $postit, $userCreator)
+    {
+        $users = $this->userRepository->getUsersInGroup($groupId);
+
+        if ($users->isNotEmpty()) {
+            $group = $this->groupRepository->getGroupById($groupId);
+
+            $usersEmails = $users->map(function ($user) {
+                return $user['email'];
+            })->toArray();
+
+            dispatch(new NewPostitCreatedJob($group, $postit, $userCreator, $usersEmails));
+        }
     }
 }

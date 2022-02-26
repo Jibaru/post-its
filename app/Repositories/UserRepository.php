@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\UserRepositoryInterface;
+use App\Models\Group;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Hash;
@@ -34,5 +35,13 @@ class UserRepository implements UserRepositoryInterface
     public function getUserByEmail($email)
     {
         return User::where('email', '=', $email)->firstOrFail();
+    }
+
+    /**
+     * 
+     */
+    public function getUsersInGroup($groupId)
+    {
+        return Group::find($groupId)->users;
     }
 }
