@@ -34,4 +34,5 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::post('groups/{id}/postits', [PostitController::class, 'store']);
     Route::get('groups/{id}/postits', [PostitController::class, 'listByGroupId']);
+    Route::delete('postits/{id}', [PostitController::class, 'destroy']);
 });

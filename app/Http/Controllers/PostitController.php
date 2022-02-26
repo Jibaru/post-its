@@ -40,7 +40,7 @@ class PostitController extends Controller
         {
             return response()->json(
                 [
-                    'message' => 'Datos inválidos',
+                    'message' => 'Grupo no encontrado',
                     'errors' => $validator->errors()
                 ],
                 Response::HTTP_BAD_REQUEST
@@ -148,6 +148,30 @@ class PostitController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $validator = Validator::make([
+            'id' => $id
+        ],[
+            'id' => 'required|integer|exists:postits'
+        ]);
+
+        if ($validator->fails())
+        {
+            return response()->json(
+                [
+                    'message' => 'Nota no encontrada',
+                    'errors' => $validator->errors()
+                ],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $this->postitRepository->deletePostitById($id);
+
+        return response()->json(
+            [
+                "message" => "Nota eliminada"
+            ],
+            Response::HTTP_OK,
+        );
     }
 }

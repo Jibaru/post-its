@@ -11,7 +11,7 @@ class PostitRepository implements PostitRepositoryInterface
      * Create a new postit
      * 
      * @param array<string, string> $postitData
-     * @return App\Models\Postit
+     * @return \App\Models\Postit
      */
     public function savePostit($postitData)
     {
@@ -27,5 +27,17 @@ class PostitRepository implements PostitRepositoryInterface
     public function getPostitsByGroupId($groupId)
     {
         return Postit::with(['user'])->where('group_id', $groupId)->get();
+    }
+
+    /**
+     * Delete a specified postit by id
+     * 
+     * @param int $id
+     * @return boolean
+     */
+    public function deletePostitById($id)
+    {
+        $postit = Postit::find($id);
+        return $postit->delete();
     }
 }
