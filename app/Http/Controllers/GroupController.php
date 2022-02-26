@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Contracts\Repositories\GroupRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Auth;
 
 class GroupController extends Controller
 {

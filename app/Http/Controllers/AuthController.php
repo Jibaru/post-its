@@ -6,8 +6,8 @@ use App\Contracts\Repositories\UserRepositoryInterface;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Auth;
 
 class AuthController extends Controller
 {
