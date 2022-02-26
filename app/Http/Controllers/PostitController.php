@@ -125,7 +125,29 @@ class PostitController extends Controller
      */
     public function show($id)
     {
-        //
+        $validator = Validator::make([
+            'id' => $id
+        ],[
+            'id' => 'required|integer|exists:postits'
+        ]);
+
+        if ($validator->fails())
+        {
+            return response()->json(
+                [
+                    'message' => 'Nota no encontrada',
+                    'errors' => $validator->errors()
+                ],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        return response()->json(
+            [
+                'postit' => $this->postitRepository->getPostitById($id)
+            ],
+            Response::HTTP_OK,
+        );
     }
 
     /**

@@ -40,4 +40,15 @@ class PostitRepository implements PostitRepositoryInterface
         $postit = Postit::find($id);
         return $postit->delete();
     }
+
+    /**
+     * Retrieves a postit by id
+     * 
+     * @param int $id
+     * @return \App\Models\Postit
+     */
+    public function getPostitById($id)
+    {
+        return Postit::with(['user'])->find($id);
+    }
 }
