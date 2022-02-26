@@ -22,11 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('user', [UserController::class, 'store']);
+Route::post('register', [UserController::class, 'store']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['jwt.verify']], function() {
-    Route::post('group', [GroupController::class, 'store']);
+    Route::post('groups', [GroupController::class, 'store']);
     Route::get('groups', [GroupController::class, 'index']);
     Route::delete('groups/{id}', [GroupController::class, 'destroy']);
     Route::get('groups/{id}', [GroupController::class, 'show']);
