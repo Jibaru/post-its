@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\UserRepositoryInterface;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
@@ -28,5 +29,10 @@ class UserRepository implements UserRepositoryInterface
             "email" => $userData["email"],
             "password" => Hash::make($userData["password"])
         ]);
+    }
+
+    public function getUserByEmail($email)
+    {
+        return User::where('email', '=', $email)->firstOrFail();
     }
 }
