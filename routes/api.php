@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\PostitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,4 +31,6 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::delete('groups/{id}', [GroupController::class, 'destroy']);
     Route::get('groups/{id}', [GroupController::class, 'show']);
     Route::post('groups/{id}/users', [GroupController::class, 'subscribe']);
+
+    Route::post('groups/{id}/postits', [PostitController::class, 'store']);
 });
