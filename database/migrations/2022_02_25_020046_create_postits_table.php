@@ -17,7 +17,7 @@ class CreatePostitsTable extends Migration
             $table->id();
             $table->string('title', 150);
             $table->string('description');
-            $table->string('image_url');
+            $table->string('image_url')->nullable();
             $table->unsignedBigInteger('group_id');
             $table->foreign('group_id')
                 ->references('id')
