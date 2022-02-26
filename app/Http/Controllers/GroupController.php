@@ -92,7 +92,25 @@ class GroupController extends Controller
      */
     public function show($id)
     {
-        //
+        $validator = $this->groupIdValidator($id);
+
+        if ($validator->fails())
+        {
+            return response()->json(
+                [
+                    'message' => 'Grupo no encontrado',
+                    'errors' => $validator->errors()
+                ],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        return response()->json(
+            [
+                'group' => $this->groupRepository->getGroupById($id)
+            ],
+            Response::HTTP_OK,
+        );
     }
 
     /**

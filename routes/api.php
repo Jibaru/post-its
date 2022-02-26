@@ -28,4 +28,5 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('group', [GroupController::class, 'store']);
     Route::get('groups', [GroupController::class, 'index']);
     Route::delete('groups/{id}', [GroupController::class, 'destroy']);
+    Route::get('groups/{id}', [GroupController::class, 'show']);
 });

@@ -44,4 +44,21 @@ class GroupRepository implements GroupRepositoryInterface
         $group = Group::find($id);
         return $group->delete();
     }
+
+    /**
+     * Retrieve a group by its id
+     * 
+     * @param int $id
+     * @return App\Models\Group
+     */
+    public function getGroupById($id)
+    {
+        return Group::with([
+                'postits', 
+                'users', 
+                'createdBy',
+            ])
+            ->get()
+            ->find($id);
+    }
 }
