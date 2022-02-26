@@ -38,7 +38,7 @@ class Group extends Model
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function groups()
+    public function users()
     {
         return $this->belongsToMany(User::class, 'users_groups', 'group_id', 'user_id');
     }
