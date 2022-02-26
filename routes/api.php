@@ -33,4 +33,5 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('groups/{id}/users', [GroupController::class, 'subscribe']);
 
     Route::post('groups/{id}/postits', [PostitController::class, 'store']);
+    Route::get('groups/{id}/postits', [PostitController::class, 'listByGroupId']);
 });

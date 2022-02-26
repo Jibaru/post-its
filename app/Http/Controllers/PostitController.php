@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Repositories\FileRepositoryInterface;
 use App\Contracts\Repositories\PostitRepositoryInterface;
-use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PostitController extends Controller
@@ -24,13 +24,35 @@ class PostitController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource by groupId
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function listByGroupId($id)
     {
-        //
+        $validator = Validator::make([
+            'id' => $id
+        ],[
+            'id' => 'required|integer|exists:groups'
+        ]);
+
+        if ($validator->fails()) 
+        {
+            return response()->json(
+                [
+                    'message' => 'Datos inválidos',
+                    'errors' => $validator->errors()
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        return response()->json(
+            [
+                'postits' => $this->postitRepository->getPostitsByGroupId($id)
+            ],
+            Response::HTTP_OK
+        );
     }
 
     /**

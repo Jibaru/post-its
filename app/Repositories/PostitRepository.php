@@ -17,4 +17,15 @@ class PostitRepository implements PostitRepositoryInterface
     {
         return Postit::create($postitData);
     }
+
+    /**
+     * Retrieves the postits of the specified group
+     * 
+     * @param int $groupId
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getPostitsByGroupId($groupId)
+    {
+        return Postit::with(['user'])->where('group_id', $groupId)->get();
+    }
 }
