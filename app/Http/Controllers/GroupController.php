@@ -20,11 +20,19 @@ class GroupController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $groups = ($request->has('page_size')) 
+            ? $this->groupRepository->getAllGroups($request->query('page_size'))
+            : $this->groupRepository->getAllGroups();
+
+        return response()->json(
+            $groups,
+            Response::HTTP_OK
+        );
     }
 
     /**

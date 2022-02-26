@@ -59,4 +59,22 @@ class GroupControllerTest extends TestCase
 
         $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
     }
+
+    /** @test */
+    public function a_status_200_is_returned_when_all_groups_have_been_got()
+    {
+        $mockRepository = $this->mock(GroupRepositoryInterface::class, function ($mock)
+        {
+            $mock->shouldReceive('getAllGroups')->once()->andReturn([]);
+        });
+
+        $request = Request::create('/groups', 'GET');
+
+        // Note: If you check an editor error, the problem was in the intellisense
+        $controller = new GroupController($mockRepository);
+
+        $response = $controller->index($request);
+
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+    }
 }

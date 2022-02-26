@@ -21,4 +21,15 @@ class GroupRepository implements GroupRepositoryInterface
             "created_by_id" => $groupData["created_by_id"]
         ]);
     }
+
+    /**
+     * Retrieves all groups in parts
+     * 
+     * @param int $pageSize
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function getAllGroups($pageSize = 10)
+    {
+        return Group::paginate($pageSize);
+    }
 }
