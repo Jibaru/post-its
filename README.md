@@ -19,3 +19,10 @@ Post-its App allows you to make and subscribe to a group and share ideas with Po
 **Note:** All routes are protected. Only `/api/login` and `api/register` doesn't have protection.
 **Note 2:** The protected routes can be accesed using a `jwt` token on the headers (with type `Bearer`). You can get a token when login.
 
+## Test live
+
+You can test the prod-test version using [This link](https://postits-api.herokuapp.com) as `host`. 
+
+## Documentation
+
+[Postman Documentation](https://documenter.getpostman.com/view/11001992/UVkqqu13)
